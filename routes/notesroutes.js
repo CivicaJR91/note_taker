@@ -22,7 +22,9 @@ module.exports = function (app) {
   // ---------------------------------------------------------------------------
 
   app.get("/api/notes", function (req, res) {
+ 
     res.json(notesData); //response to /db/db.json
+  
   });
 
   // API POST Requests
@@ -36,44 +38,45 @@ module.exports = function (app) {
       id: noteId
     }
     console.log(createNewNotes);
-
-     // Saving the Data 
-    fs.readFile(path.join(__dirname,"../db","db.json"), 'utf8', function (err, data) {
+    
+    const database_Dir = path.resolve (__dirname,"../db"); //director path to the file
+    const outputData = path.join (database_Dir,"db.json");
+     
+    // Saving the Data 
+    fs.readFile(path.join(outputData), 'utf8', function (err, data) {
       if (err) throw err
 
-      const dbnotes= JSON.parse(data); // data on the db
+      const dbnotes = JSON.parse(data);
+      
+      dbnotes.push(createNewNotes);
+      
 
-      dbnotes.push(createNewNotes);//passing new data to db.json file
+      
+      fs.writeFile(outputData, JSON.stringify(dbnotes), 'utf8', function(err) {
+        if (err) throw err
+        
+        console.log("Data Was Retreive");
 
-      console.log(data);
-      res.json(true);
-    
+        // res.json(dbnotes);// response should be the new data
+        res.send(dbnotes);
 
-       //Retreaving the data
-       const database_Dir = path.resolve (__dirname,"../db"); //directory where database is
-       const outputData = path.join (database_Dir,"db.json"); //database file
-    
-       fs.writeFile(outputData, JSON.stringify(dbnotes), 'utf8', function(err){
-           if (err) 
-           console.log(err);
-  
-           console.log("Data Was Retreive")
-         } )
+      });
 
     });
-
+    
   });
 
- 
+  //Deleting Data and then re write the file
 
-  //Delete
+  // app.delete('/api/notes/:id', function(req, res) {
 
-  // app.delete("/api/notes", function(req, res){
-  //   //add here
-  //   res.send("Delete Request")
+  //     // const deleteId = req.params.id
+  //     // //filter the array by the id
+
+  //     res.send(dbnotes);
 
   // })
 
-
-
 };
+
+

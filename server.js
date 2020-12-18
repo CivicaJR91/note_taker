@@ -17,8 +17,8 @@ app.use (express.static('public'));
 // ROUTER
 // What Routes Are We Using 
 
-require("./routes/htmlroutes")(app);
 require("./routes/notesroutes")(app);
+require("./routes/htmlroutes")(app);
 
 
 // The below code effectively "starts" our server

@@ -127,8 +127,10 @@ const renderNoteList = (notes) => {
     noteListItems.push(create$li("No saved Notes", false));
   }
 
-  console.log(notes)
-  
+  console.log("starting debugging");
+
+  console.log(notes);
+
   notes.forEach((note) => {
     const $li = create$li(note.title).data(note);
     noteListItems.push($li);
@@ -141,7 +143,7 @@ const renderNoteList = (notes) => {
 
 
 const getAndRenderNotes = () => {
-  return getNotes().then(renderNoteList);
+  return getNotes().then(notes => renderNoteList(notes));
 };
 
 $saveNoteBtn.on("click", handleNoteSave);
