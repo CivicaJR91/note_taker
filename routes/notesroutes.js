@@ -6,14 +6,11 @@
 
 const notesData = require("../db/db.json");
 const { report, title } = require("process");
-
 const fs = require("fs");
 const { v4: uuidv4 } = require('uuid');
 const { text } = require("express");
 const noteId = uuidv4();
 const path = require("path");
-
-
 
 // ===============================================================================
 // ROUTING APIS
@@ -41,29 +38,27 @@ module.exports = function (app) {
     console.log(createNewNotes);
 
      // Saving the Data 
+    fs.readFile(path.join(__dirname,"../db","db.json"), 'utf8', function (err, data) {
+      if (err) throw err
 
+      const dbnotes= JSON.parse(data); // data on the db
 
-    fs.readFile('../db/db.json', 'utf8', function (err) {
-      if (err)
+      dbnotes.push(createNewNotes);//passing new data to db.json file
 
-      notesData.push(createNewNotes); //pushing data to the db.json file
+      console.log(data);
       res.json(true);
+    
 
        //Retreaving the data
-
-       //directory where database is
-       const database_Dir = path.resolve (__dirname,"db");
-       //database file
-       const outputData = path.join (database_Dir,"db.json");
-
-       ///api/notes.html where the html file is
-       fs.writeFile(outputData, '/api/notes.html', function(err){
-         if (err) 
-         console.log(err);
-        //  res.send(createNewNotes);
-
-         console.log("Data Was Retreive")
-       } )
+       const database_Dir = path.resolve (__dirname,"../db"); //directory where database is
+       const outputData = path.join (database_Dir,"db.json"); //database file
+    
+       fs.writeFile(outputData, JSON.stringify(dbnotes), 'utf8', function(err){
+           if (err) 
+           console.log(err);
+  
+           console.log("Data Was Retreive")
+         } )
 
     });
 
