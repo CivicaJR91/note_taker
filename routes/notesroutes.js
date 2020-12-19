@@ -12,6 +12,9 @@ const { text } = require("express");
 const noteId = uuidv4();
 const path = require("path");
 
+const database_Dir = path.resolve (__dirname,"../db"); //director path to the file
+const outputData = path.join (database_Dir,"db.json");
+
 // ===============================================================================
 // ROUTING APIS
 // ===============================================================================
@@ -23,7 +26,11 @@ module.exports = function (app) {
 
   app.get("/api/notes", function (req, res) {
  
-    res.json(notesData); //response to /db/db.json
+    fs.readFile(path.join(outputData), 'utf8', function (err, data) {
+      if (err) throw err
+  
+    res.json(JSON.parse(data));
+    }); //response to /db/db.json
   
   });
 
@@ -39,8 +46,7 @@ module.exports = function (app) {
     }
     console.log(createNewNotes);
     
-    const database_Dir = path.resolve (__dirname,"../db"); //director path to the file
-    const outputData = path.join (database_Dir,"db.json");
+    
      
     // Saving the Data 
     fs.readFile(path.join(outputData), 'utf8', function (err, data) {
