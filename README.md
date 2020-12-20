@@ -24,5 +24,5 @@ Application should allow users to delete previously saved notes.
 * Path Module
 
 ## URLs
-* Github Repository:
-* Heroku:
+* Github Repository: https://github.com/CivicaJR91?tab=repositories
+* Heroku: https://agile-temple-01324.herokuapp.com/
