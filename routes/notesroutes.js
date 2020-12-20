@@ -62,14 +62,16 @@ module.exports = function (app) {
 
     //After delete id read data in file
 
-    fs.readFile(path.join(outputData), 'utf8', function (err, data) {
+    fs.readFile(outputData, 'utf8', function (err, data) {
       if (err) throw err
      
       console.log(deleteId);
 
       const dbnotes = JSON.parse(data);
 
-
+      const deleteNotes = dbnotes.filter(note => note.id != deleteId);
+      console.log(deleteNotes);
+      
       // Write file again
 
       fs.writeFile(outputData, JSON.stringify(dbnotes), 'utf8', function (err) {
